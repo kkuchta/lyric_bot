@@ -4,11 +4,13 @@ GEM
     addressable (2.5.1)
       public_suffix (~> 2.0, >= 2.0.2)
     buftok (0.2.0)
+    byebug (9.0.6)
     chatterbot (2.0.4)
       colorize (>= 0.7.3)
       launchy (>= 2.4.2)
       oauth (~> 0.4.7)
       twitter (~> 6.1.0)
+    coderay (1.1.1)
     colorize (0.8.1)
     domain_name (0.5.20170404)
       unf (>= 0.0.5, < 1.0.0)
@@ -29,11 +31,20 @@ GEM
       addressable (~> 2.3)
     memoizable (0.4.2)
       thread_safe (~> 0.3, >= 0.3.1)
+    method_source (0.8.2)
     multipart-post (2.0.0)
     naught (1.1.0)
     oauth (0.4.7)
+    pry (0.10.4)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
+    pry-byebug (3.4.2)
+      byebug (~> 9.0)
+      pry (~> 0.10)
     public_suffix (2.0.5)
     simple_oauth (0.3.1)
+    slop (3.6.0)
     thread_safe (0.3.6)
     twitter (6.1.0)
       addressable (~> 2.5)
@@ -55,6 +66,7 @@ PLATFORMS
 DEPENDENCIES
   chatterbot
   dotenv
+  pry-byebug
 
 RUBY VERSION
    ruby 2.3.1p112
