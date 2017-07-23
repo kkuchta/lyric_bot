@@ -7,6 +7,9 @@ if ENV['ENV'] == 'development'
   require 'pry-byebug'
 end
 
+require './lyric_checker'
+require './tweet'
+
 client = Twitter::Streaming::Client.new do |config|
   config.consumer_key        = ENV['CONSUMER_KEY']
   config.consumer_secret     = ENV['CONSUMER_SECRET']
@@ -14,7 +17,26 @@ client = Twitter::Streaming::Client.new do |config|
   config.access_token_secret = ENV['ACCESS_SECRET']
 end
 
-client.sample do |object|
-  puts object.text if object.is_a?(Twitter::Tweet)
+corpus = File.read('hamilton_corpus.txt')
+
+lyric_checker = LyricChecker.new(corpus)
+
+puts 'starting'
+client.sample(language:'en') do |object|
+  next if !object.is_a?(Twitter::Tweet) || object.retweet?
+  #puts "checking"
+
+  tweet = Tweet.new(object)
+  lyric = lyric_checker.find_matching_lyrics(tweet)
+  if lyric
+    puts "Found a match!"
+    puts "Tweet:" + tweet.body
+    puts "Lyrics: "
+    puts lyric.text
+    puts lyric.next.join("\n")
+    puts "---"
+  end
+  #puts tweet.body
+  #puts tweet.tokens.join('|')
 end
 puts 'done'
