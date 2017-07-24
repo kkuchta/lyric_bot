@@ -9,7 +9,7 @@ class Tweet
   end
 
   def tokens
-    body
+    @_tokens ||= body
       .gsub(CLEAN_REGEX, '')
       .downcase
       .split(/[ \n]/)

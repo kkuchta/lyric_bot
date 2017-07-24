@@ -23,20 +23,21 @@ lyric_checker = LyricChecker.new(corpus)
 
 puts 'starting'
 client.sample(language:'en') do |object|
+
+  if object.is_a?(Twitter::Streaming::StallWarning)
+    puts "Stall warning"
+    next
+  end
   next if !object.is_a?(Twitter::Tweet) || object.retweet?
-  #puts "checking"
 
   tweet = Tweet.new(object)
   lyric = lyric_checker.find_matching_lyrics(tweet)
   if lyric
-    puts "Found a match!"
     puts "Tweet:" + tweet.body
     puts "Lyrics: "
     puts lyric.text
     puts lyric.next.join("\n")
     puts "---"
   end
-  #puts tweet.body
-  #puts tweet.tokens.join('|')
 end
 puts 'done'
