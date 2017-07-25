@@ -13,10 +13,10 @@ class CommonWords
 
       # The most common word is worth `floor`
       # The least common word is worth `10k * coefficient + floor`
-      # words are worth 12.
+      # Unkown words are word `unkown`
       floor = 2
       coefficient = 0.0006 # max = 8
-      unknown = 10
+      unknown = 9
       @_score_cache[word] = position \
         ? position * coefficient + floor
         : unknown

@@ -10,7 +10,13 @@ end
 require './lyric_checker'
 require './tweet'
 
-client = Twitter::Streaming::Client.new do |config|
+stream = Twitter::Streaming::Client.new do |config|
+  config.consumer_key        = ENV['CONSUMER_KEY']
+  config.consumer_secret     = ENV['CONSUMER_SECRET']
+  config.access_token        = ENV['ACCESS_TOKEN']
+  config.access_token_secret = ENV['ACCESS_SECRET']
+end
+rest = Twitter::REST::Client.new do |config|
   config.consumer_key        = ENV['CONSUMER_KEY']
   config.consumer_secret     = ENV['CONSUMER_SECRET']
   config.access_token        = ENV['ACCESS_TOKEN']
@@ -22,7 +28,7 @@ corpus = File.read('hamilton_corpus.txt')
 lyric_checker = LyricChecker.new(corpus)
 
 puts 'starting'
-client.sample(language:'en') do |object|
+stream.sample(language:'en') do |object|
 
   if object.is_a?(Twitter::Streaming::StallWarning)
     puts "Stall warning"
@@ -30,13 +36,32 @@ client.sample(language:'en') do |object|
   end
   next if !object.is_a?(Twitter::Tweet) || object.retweet?
 
-  tweet = Tweet.new(object)
+  tweet = Tweet.new(object, rest)
   lyric = lyric_checker.find_matching_lyrics(tweet)
   if lyric
     puts "Tweet:" + tweet.body
     puts "Lyrics: "
     puts lyric.text
-    puts lyric.next.join("\n")
+    #puts lyric.next.join("\n")
+
+
+    # ----
+    # TODO: consider blank lines to be stops in the lyric file
+    # ----
+    reply_tweet = lyric.next.reduce("") do |string, line|
+      new_line = string + "\n" + line
+      if new_line.length > 140
+        break string
+      end
+
+      new_line
+    end
+    reply_tweet.strip!
+
+    puts "Possible reply_tweet (#{reply_tweet.length} chars):"
+    puts reply_tweet
+    tweet.retweet
+    rest.update(reply_tweet)
     puts "---"
   end
 end

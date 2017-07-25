@@ -1,8 +1,9 @@
 require './line'
 
 class LyricChecker
-  MATCH_SCORE_THRESHOLD = 13
-  NEXT_LINES_TO_INCLUDE = 5
+  MATCH_SCORE_THRESHOLD = 14
+  #MATCH_SCORE_THRESHOLD = 9
+  NEXT_LINES_TO_INCLUDE = 10
 
   # Right now we only check a single song, at least for testing purposes.
   def initialize(corpus)
