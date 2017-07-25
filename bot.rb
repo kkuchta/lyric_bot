@@ -1,3 +1,6 @@
+$stdout.sync = true
+puts 'Booting up'
+
 require 'dotenv'
 require 'twitter'
 
@@ -23,11 +26,11 @@ rest = Twitter::REST::Client.new do |config|
   config.access_token_secret = ENV['ACCESS_SECRET']
 end
 
+puts 'initializing corpus'
 corpus = File.read('hamilton_corpus.txt')
-
 lyric_checker = LyricChecker.new(corpus)
 
-puts 'starting'
+puts 'starting stream'
 stream.sample(language:'en') do |object|
 
   if object.is_a?(Twitter::Streaming::StallWarning)
@@ -42,8 +45,6 @@ stream.sample(language:'en') do |object|
     puts "Tweet:" + tweet.body
     puts "Lyrics: "
     puts lyric.text
-    #puts lyric.next.join("\n")
-
 
     # ----
     # TODO: consider blank lines to be stops in the lyric file
