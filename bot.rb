@@ -51,6 +51,8 @@ stream.sample(language:'en') do |object|
     # ----
     reply_tweet = lyric.next.reduce("") do |string, line|
       new_line = string + "\n" + line
+
+      # TODO: fetch short_url_length_https instead of assuming 24 forever
       if new_line.length > 117 # 140 - 24 for the link + 1 for \n
         break string
       end
