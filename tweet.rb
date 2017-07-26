@@ -20,4 +20,8 @@ class Tweet
   def retweet
     @client.retweet(@tweet_object)
   end
+
+  def url
+    @tweet_object.uri
+  end
 end

@@ -51,18 +51,19 @@ stream.sample(language:'en') do |object|
     # ----
     reply_tweet = lyric.next.reduce("") do |string, line|
       new_line = string + "\n" + line
-      if new_line.length > 140
+      if new_line.length > 117 # 140 - 24 for the link + 1 for \n
         break string
       end
 
       new_line
     end
-    reply_tweet.strip!
+    reply_tweet.strip! # Remove leading \n
+    reply_tweet << ' ' + tweet.url
 
     puts "Possible reply_tweet (#{reply_tweet.length} chars):"
     puts reply_tweet
-    tweet.retweet
-    rest.update(reply_tweet)
+    update_result = rest.update(reply_tweet)
+
     puts "---"
   end
 end
