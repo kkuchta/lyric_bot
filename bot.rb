@@ -64,7 +64,9 @@ stream.sample(language:'en') do |object|
 
     puts "Possible reply_tweet (#{reply_tweet.length} chars):"
     puts reply_tweet
-    update_result = rest.update(reply_tweet)
+    if ENV['SEND_TWEETS'] == 'true'
+      update_result = rest.update(reply_tweet)
+    end
 
     puts "---"
   end

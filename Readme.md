@@ -21,12 +21,15 @@ CONSUMER_SECRET=def789
 ACCESS_TOKEN=ghi101
 ACCESS_SECRET=jkl112
 MATCH_SCORE_THRESHOLD=14
+SEND_TWEETS=true
 ```
 
 The keys/secrets/tokens are from your twitter app.  If you're not familiar with
 those, you'll need to do some reading in the twitter api guide.
 
 The `MATCH_SCORE_THRESHOLD` variable determines how sensitive the lyric detection is.  Higher numbers will require more words to match, resulting in better but less-frequent matches. Lower numbers will require fewer words to match, resulting in more, worse matches.  See "Matching logic" below for details.  14 seems to work pretty well for Hamilton (yielding around 1 match every couple hours).  You may need to adjust this for your specific corpus, though.
+
+`SEND_TWEETS` is used for testing.  If set to `true`, tweets are actually sent.  Otherwise they're just logged to stdout.
 
 ## Matching logic
 The exact number of words needed to trigger a match vary: words are weighted by how common they are ("the" and "me" are weighted much lower than "weighted" and "subjective").  Words are worth 2 to 9 points.  A candidate tweet and a candidate lyric line need to have enough matching words such that the sum of the weighted score of those words exceeds a specific (configurable) threshold.
