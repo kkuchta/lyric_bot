@@ -1,4 +1,4 @@
-require './common_words'
+require_relative './common_words'
 class Line
   #MIN_LINE_LENGTH = 3
   TOKEN_REGEX = /[^a-zA-Z ]/

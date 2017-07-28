@@ -10,8 +10,8 @@ if ENV['ENV'] == 'development'
   require 'pry-byebug'
 end
 
-require './lyric_checker'
-require './tweet'
+require_relative './lyric_checker'
+require_relative './tweet'
 
 stream = Twitter::Streaming::Client.new do |config|
   config.consumer_key        = ENV['CONSUMER_KEY']
@@ -27,7 +27,7 @@ rest = Twitter::REST::Client.new do |config|
 end
 
 puts 'initializing corpus'
-corpus = File.read('hamilton_corpus.txt')
+corpus = File.read('./hamilton_corpus.txt')
 lyric_checker = LyricChecker.new(corpus)
 
 puts 'starting stream'

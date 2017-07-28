@@ -1,4 +1,4 @@
-require './line'
+require_relative './line'
 
 class LyricChecker
   MATCH_SCORE_THRESHOLD = ENV['MATCH_SCORE_THRESHOLD']&.to_i
