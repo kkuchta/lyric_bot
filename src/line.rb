@@ -18,8 +18,14 @@ class Line
     @line_text
   end
 
-  def next
-    @next_lines
+  def next_lines(max_length)
+    @next_lines.reduce([]) do |lines, line|
+      new_lines = lines + [line]
+      if new_lines.join("\n").length > max_length
+        break lines
+      end
+      new_lines
+    end.join("\n")
   end
 
   def matches(tweet_tokens)
