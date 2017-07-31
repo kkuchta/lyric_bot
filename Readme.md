@@ -1,10 +1,18 @@
 # Lyric Bot
 
+![](http://i.imgur.com/Fxk8dWU.png)
+
 Given a corpus of lyrics (eg, all the lyrics to Hamilton) in a text file, this bot will detect partial lyrics in public tweets and post the next few lines.
 
 Specifically, if the last few words of a tweet match the last few words of a line from the corpus, it's considered a match.
 
+Additionally, tweets in reply to this bot will be checked for lyrics, as will tweets at-mentioning this bot.
+
 ## Setup
+
+You'll need a twitter account and a twitter app (see https://apps.twitter.com)
+
+Run `bundle install` to install dependencies.
 
 Run the bot with `ruby bot.rb`
 
@@ -36,5 +44,5 @@ The exact number of words needed to trigger a match vary: words are weighted by 
 
 ## TODOs
 - Handle song-boundaries.  Right now, someone tweeting the last line of a song might get replied to with the first lines of the next song.
-- Handle replies to the bot.  Right now we only look for matches in the public feed.  We should also look for matches in replies (and reply back with new lyrics).  This'll let people sing hamilton along with the bot.  :)
 - Generally clean up code.  It was a Sunday afternoon hack project.
+- Write some simple tests around the matching logic
