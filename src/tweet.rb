@@ -20,7 +20,7 @@ class Tweet
   end
 
   def screen_name_regexp
-    @_regexp = Regexp.new('^' + @client.user.screen_name)
+    @@_regexp ||= Regexp.new('^' + @client.user.screen_name)
   end
 
   def retweet

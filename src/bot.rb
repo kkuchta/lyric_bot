@@ -22,4 +22,4 @@ lyric_checker = LyricChecker.new(corpus)
 tweet_processor = TweetProcessor.new(lyric_checker)
 tweet_processor.run
 
-puts "Done, somehow?"
+puts "Closing bot"

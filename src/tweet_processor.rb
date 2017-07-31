@@ -16,22 +16,24 @@ class TweetProcessor
   private
 
   def run_mention_search
-    puts "----- running search"
+    puts "Starting mention search"
+
+    # Ok, for some reason at-mentioning @SuddenHamilton doesn't trigger this, but
+    # it works fine on test accounts.
 
     # Look at all tweets for my account
     stream_client.user(replies: 'all') do |object|
       if object.is_a?(Twitter::Streaming::Event) && object.name == :quoted_tweet
         puts "found from quoted_tweet" if process_tweet(object.target_object)
       elsif object.is_a?(Twitter::Tweet)
-        puts "found from user" if process_tweet(object)
+        puts "found from user feed" if process_tweet(object)
       end
     end
   end
 
   def run_sample
-    puts "------------- running sample"
+    puts "Running public sample"
     stream_client.sample(language: 'en') do |object|
-      next
       next unless object.is_a?(Twitter::Tweet)
       puts "found from sample" if process_tweet(object)
     end
@@ -41,12 +43,12 @@ class TweetProcessor
   def process_tweet(object)
 
     # Skip if this is my own tweet
-    return if object.user.id == me.id
+    return if object.user.id == my_id
 
     return if object.retweet?
 
     # Skip replies (but allow replies to me)
-    return if object.reply? && object.in_reply_to_user_id != me.id
+    return if object.reply? && object.in_reply_to_user_id != my_id
 
     # Ok, it's some kind of tweet we want to check; let's see if it's a match
     # TODO: remove links and/or mentions at the end of the tweet, probs in line.rb
@@ -59,7 +61,7 @@ class TweetProcessor
 
     if object.quote?
       respond_with_quote(tweet, lyric)
-    elsif object.reply? || tweet.body.include?(me.screen_name)
+    elsif object.reply? || tweet.body.include?(my_name)
       respond_with_reply(tweet, lyric)
     else
       respond_with_quote(tweet, lyric)
@@ -80,7 +82,6 @@ class TweetProcessor
 
     if ENV['SEND_TWEETS'] == 'true'
       result = rest_client.update(reply_tweet, in_reply_to_status_id: tweet.id)
-      puts 'here'
     else
       puts 'Sending disabled'
     end
@@ -102,6 +103,13 @@ class TweetProcessor
     else
       puts 'Sending disabled'
     end
+  end
+
+  def my_name
+    @_my_name ||= me.screen_name
+  end
+  def my_id
+    @_my_id ||= me.id
   end
 
   def me
