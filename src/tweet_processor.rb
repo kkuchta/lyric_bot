@@ -1,3 +1,5 @@
+# A persistent object that will start monitoring twitter (using the given
+# lyric_checker object to determine if a given tweet is relevant)
 class TweetProcessor
   def initialize(lyric_checker)
     @lyric_checker = lyric_checker
@@ -74,7 +76,7 @@ class TweetProcessor
   def respond_with_reply(tweet, lyric)
     puts "responding with reply"
     source_screen_name = '@' + tweet.source_screen_name
-    reply_tweet = lyric.next_lines(140 - (source_screen_name.length + 1))
+    reply_tweet = lyric.next_lines(280 - (source_screen_name.length + 1))
     reply_tweet = source_screen_name + ' ' + reply_tweet
 
     puts "\nreply_tweet (#{reply_tweet.length} chars):"
@@ -90,8 +92,8 @@ class TweetProcessor
   def respond_with_quote(tweet, lyric)
     puts "replying with quote"
 
-    # 140 - 24 for the link
-    reply_tweet = lyric.next_lines(116)
+    # 280 - 24 for the link
+    reply_tweet = lyric.next_lines(256)
 
     reply_tweet << ' ' + tweet.url
 
@@ -115,13 +117,6 @@ class TweetProcessor
   def me
     @_me ||= rest_client.user
   end
-
-  #def my_id
-    #@_id ||= rest_client.user.id
-  #end
-  #def my_screen_name
-    #@_screen_name ||= rest_client.user.screen_name
-  #end
 
   def stream_client
     @_stream ||= Twitter::Streaming::Client.new do |config|

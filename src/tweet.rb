@@ -1,3 +1,4 @@
+# Wraps a single tweet object (as might be given by twitter's streaming api sdk)
 class Tweet
   CLEAN_REGEX = /[^a-zA-Z \n]/
   def initialize(tweet_object, client)

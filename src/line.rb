@@ -1,4 +1,7 @@
 require_relative './common_words'
+
+# Wraps a single lyric line (plus a few following lines) with some useful
+# methods around that line.
 class Line
   #MIN_LINE_LENGTH = 3
   TOKEN_REGEX = /[^a-zA-Z ]/

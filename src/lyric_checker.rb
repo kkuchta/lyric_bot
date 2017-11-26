@@ -1,8 +1,10 @@
 require_relative './line'
 
+# An object, initialized with a corpus of lyrics, that will check a given tweet
+# against that corpus accoding to a variety of rules.
 class LyricChecker
   MATCH_SCORE_THRESHOLD = ENV['MATCH_SCORE_THRESHOLD']&.to_i
-  NEXT_LINES_TO_INCLUDE = 10
+  NEXT_LINES_TO_INCLUDE = 20
 
   def initialize(corpus)
     @corpus = corpus
